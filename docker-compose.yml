@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+
+  app:
+    build: ./src
+    command: gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000 --reload
+    volumes:
+      - ./src:/fastapi_app
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    depends_on:
+      - db
+    entrypoint:
+      /fastapi_app/entrypoint.sh
+
+  db:
+    image: postgres:15
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    environment:
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
