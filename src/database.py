@@ -8,4 +8,5 @@ def init_db(app: FastAPI) -> None:
     register_tortoise(
         app,
         config=settings.TORTOISE_ORM,
+        add_exception_handlers=True,
     )

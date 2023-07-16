@@ -17,3 +17,5 @@ RUN pip install poetry && poetry config virtualenvs.create false && poetry insta
 COPY . .
 
 RUN chmod +x entrypoint.sh
+
+EXPOSE 8000

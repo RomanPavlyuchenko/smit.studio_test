@@ -1,10 +1,38 @@
-from pydantic import BaseModel
-from tortoise.contrib.pydantic import pydantic_model_creator
+from datetime import date
+from typing import Dict, List
 
-from models import Rate
+from pydantic import BaseModel, Field, RootModel, condecimal
 
 
-RateSchema = pydantic_model_creator(Rate, name='Rate')
+class RateSchema(BaseModel):
+    cargo_type: str = Field(max_length=50)
+    rate: float
+    date_from: date
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "cargo_type": "Glass",
+                "rate": 0.04,
+                "date_from": "2023-06-01"
+            }
+        }
+        from_attributes = True
+
+
+class RateCreateSchema(BaseModel):
+    created: List[RateSchema]
+    updated: List[RateSchema]
+
 
 class CalculateResult(BaseModel):
     insurance_cost: float
+
+
+class CargoItem(BaseModel):
+    cargo_type: str
+    rate: condecimal(gt=0)
+
+
+class RatesByDate(RootModel):
+    root: Dict[date, List[CargoItem]]
