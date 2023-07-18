@@ -61,7 +61,7 @@ async def calculate_insurance_cost(
 
     insurnce_rate = await Rate.filter(
         cargo_type=cargo_type, date_from__lte=date_from).order_by(
-        'date_from').first()
+        '-date_from').first()
 
     if insurnce_rate is None:
         raise HTTPException(status_code=404, detail=f'Rate for {cargo_type} not found')
