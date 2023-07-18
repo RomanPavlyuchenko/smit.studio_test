@@ -8,6 +8,6 @@ done
 
 echo "PostgreSQL started"
 
-aerich init-db
+aerich upgrade
 
 exec "$@"

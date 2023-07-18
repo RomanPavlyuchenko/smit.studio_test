@@ -36,3 +36,12 @@ class CargoItem(BaseModel):
 
 class RatesByDate(RootModel):
     root: Dict[date, List[CargoItem]]
+
+
+class HTTPUnsupportedMediaTypeError(BaseModel):
+    detail: str
+
+    class Config:
+        json_schema_extra = {
+            "example": {"detail": "Unsupported file extension."},
+        }

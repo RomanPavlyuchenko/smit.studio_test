@@ -1,10 +1,10 @@
-from typing import List
+from typing import Dict, List
 from rates.models import Rate
 from rates.schemas import RateSchema, RatesByDate
 
 
 async def create_or_update_rate_json(
-        json_data: RatesByDate) -> List[RateSchema]:
+        json_data: RatesByDate) -> Dict[str, List[RateSchema]]:
 
     processed = {
         'created': list(),
